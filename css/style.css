@@ -1,0 +1,8 @@
+
+#game_field{
+    background-color: rgb(64, 190, 14);
+}
+
+html, body {
+    margin: 0; height: 100%; overflow: hidden
+}
