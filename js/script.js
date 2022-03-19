@@ -12,6 +12,14 @@ class Snake {
   static DOWN = -2;
   static TIC = 100;
   static CELLS_COUNT = 20;
+  static head_l = new Image(10, 10);
+  static head_r = new Image(10, 10);
+  static head_u = new Image(10, 10);
+  static head_d = new Image(10, 10);
+  static body_img = new Image(10, 10);
+  static apple_img = new Image(10, 10);
+
+  head = new Image(10, 10);
   is_game_stated = false;
   is_game_over = false;
   body = [];
@@ -23,10 +31,34 @@ class Snake {
     this.body.push(new Position(5, 5));
     this.create_apple();
     this.ctx = ctx;
+    this.load_images();
   }
 
+  load_images() {
+    Snake.head_l.src = `img/head${Snake.LEFT}.png`;
+    Snake.head_r.src = `img/head${Snake.RIGHT}.png`;
+    Snake.head_u.src = `img/head${Snake.UP}.png`;
+    Snake.head_d.src = `img/head${Snake.DOWN}.png`;
+    Snake.body_img.src = 'img/body.png';
+    Snake.apple_img.src = 'img/apple.png';
+    this.set_head();  
+  }
+
+  set_head() {
+    if (this.vec == Snake.LEFT)
+      this.head = Snake.head_l;
+    else if (this.vec == Snake.RIGHT)
+      this.head = Snake.head_r;
+    else if (this.vec == Snake.UP)
+      this.head = Snake.head_u;
+    else if (this.vec == Snake.DOWN)
+      this.head = Snake.head_d;
+  }
   set_vec(vec) {
-    setTimeout(() => { this.vec = vec; }, Snake.TIC);
+    setTimeout(() => {
+      this.vec = vec;
+      this.set_head();
+    }, Snake.TIC);
   }
 
   set_width_and_height(width, height) {
@@ -137,15 +169,19 @@ class Snake {
 
   paint() {
     this.ctx.fillStyle = "red";
+
     for (var i = 0; i < this.body.length; i++) {
-      this.ctx.fillRect(this.body[i].x * this.size, this.body[i].y * this.size, this.size, this.size);
+      if (i == 0) {
+        this.ctx.drawImage(this.head, this.body[0].x * this.size - this.size / 2, this.body[0].y * this.size - this.size / 2, this.size * 2, this.size * 2);
+      }
+      else {
+        this.ctx.drawImage(Snake.body_img, this.body[i].x * this.size, this.body[i].y * this.size, this.size, this.size);
+      }
     }
     this.ctx.fillStyle = "black";
     this.ctx.font = `bold ${this.size}px arial`;
     this.ctx.fillText(`score: ${this.body.length - 1}`, 5, this.size);
-
-    this.ctx.fillStyle = "yellow";
-    this.ctx.fillRect(this.apple.x * this.size, this.apple.y * this.size, this.size, this.size);
+    this.ctx.drawImage(Snake.apple_img, this.apple.x * this.size, this.apple.y * this.size, this.size, this.size);
   }
 
   update() {
@@ -216,8 +252,8 @@ window.addEventListener("keydown", function (event) {
     if (!snake.is_game_stated)
       start();
 
-    // else if (key == "Esc" || key == "Escape")
-    //   snake.eat();
+  // else if (key == "Esc" || key == "Escape")
+  //   snake.eat();
 
   // Cancel the default action to avoid it being handled twice
   event.preventDefault();
