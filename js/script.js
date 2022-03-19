@@ -41,7 +41,7 @@ class Snake {
     Snake.head_d.src = `img/head${Snake.DOWN}.png`;
     Snake.body_img.src = 'img/body.png';
     Snake.apple_img.src = 'img/apple.png';
-    this.set_head();  
+    this.set_head();
   }
 
   set_head() {
@@ -213,11 +213,20 @@ function start() {
   }, Snake.TIC);
 }
 
-window.addEventListener('resize', function (event) {
+window.addEventListener('load', function () {
+  console.log('All assets are loaded');
+  start();
+})
+
+
+window.addEventListener('resize',  (event) => {
   canvas.width = window.innerWidth;
   canvas.height = window.innerHeight;
   snake.set_width_and_height(canvas.width, canvas.height);
-  snake.create_apple();
+  setTimeout(() => {
+    snake.create_apple();
+  }, Snake.TIC);
+
 }, true);
 
 
@@ -249,6 +258,7 @@ window.addEventListener("keydown", function (event) {
   }
 
   else if (key == "Enter")
+    // for first screen
     if (!snake.is_game_stated)
       start();
 
