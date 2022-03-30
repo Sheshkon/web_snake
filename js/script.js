@@ -208,12 +208,12 @@ var snake = new Snake(
 
 function start() {
   console.log('start');
-  timer = setInterval(function () {
+  timer = setInterval( () => {
     snake.move();
   }, Snake.TIC);
 }
 
-window.addEventListener('load', function () {
+window.addEventListener('load', () => {
   console.log('All assets are loaded');
   start();
 })
@@ -231,7 +231,7 @@ window.addEventListener('resize',  (event) => {
 
 
 
-window.addEventListener("keydown", function (event) {
+window.addEventListener("keydown", (event) => {
   if (event.defaultPrevented) {
     return; // Do nothing if the event was already processed
   }
